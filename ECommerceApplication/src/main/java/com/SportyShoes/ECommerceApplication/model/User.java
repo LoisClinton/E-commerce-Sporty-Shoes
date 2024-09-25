@@ -1,3 +1,18 @@
 package com.SportyShoes.ECommerceApplication.model;
 
-public class User {}
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Entity
+@Data
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer uid;
+
+    @Column(unique = true)
+    private String email;
+    @Column(unique = true)
+    private String password;
+    private String userType; // Either "admin" or "customer"
+}
