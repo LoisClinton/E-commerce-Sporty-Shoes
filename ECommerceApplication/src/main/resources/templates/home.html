@@ -5,6 +5,25 @@
   <title>Customer Homepage</title>
 </head>
 <body>
-<h1>Customer Home</h1>
+<h1>Welcome to Customer Homepage</h1>
+<h2>Current Products in stock</h2>
+
+<button onclick="window.location.href='/login'">Logout</button>
+<button onclick="window.location.href='/orders'">View my Orders</button>
+<button>Go to Basket</button>
+
+  <section style="width: 90%; display: flex; flex-wrap: wrap; justify-content: space-around; background-color: black;">
+    <article th:each="product : ${products}" class="card" style="width: 20%; background-color: white; padding: 5px; margin: 5px; justify-content: space-around; border-radius: 10px;">
+      <img th:src="${product.imageUrl}" width="200" height="200"></img>
+      <h2 th:text="${product.name}"></h2>
+      <p th:text="${product.brand}"></p>
+      <p th:text="${product.price}"></p>
+      <div>
+        <input type="submit" value="Add to Basket"></input>
+        <input th:name="orderQuantity" th:value="${1}" type="number" style="width: 50px"></input>
+      </div>
+    </article>
+  </section>
+
 </body>
 </html>
