@@ -21,7 +21,7 @@ public class Order {
 
     @ManyToMany
     @JoinTable(
-            name = "order_products",
+            name = "product_orders",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products; // The list of products in this order

@@ -6,8 +6,18 @@
 </head>
 <body>
 <h1>Admin Dashboard</h1>
-<a href="/admin/addProduct">Add Product</a>
-<table>
+<form action="#" th:action="@{/admin/addProduct}" method="post" th:object="${product}">
+  <p>Product Name: <input type="text" th:field="*{name}" /></p>
+  <p>Product Brand: <input type="text" th:field="*{brand}" /></p>
+  <p>Product Price: <input type="text" th:field="*{price}" /></p>
+  <p>Product Amount: <input type="text" th:field="*{quantity}" /></p>
+  <input type="submit" value="Add Product" name="mySubmitButton"/>
+  <input type="reset" value="reset"/>
+</form>
+<h1>Current Products in stock</h1>
+
+
+<table border="1">
   <tr>
     <th>ID</th>
     <th>Name</th>
@@ -16,11 +26,26 @@
     <th>Quantity</th>
   </tr>
   <tr th:each="product : ${products}">
-    <td th:text="${product.id}"></td>
-    <td th:text="${product.name}"></td>
-    <td th:text="${product.brand}"></td>
-    <td th:text="${product.price}"></td>
-    <td th:text="${product.quantity}"></td>
+    <form action="#" th:action="@{/admin/updateProduct}" method="get" th:object="${product}">
+    <td>
+      <input type="text" th:name="pid" th:value="${product.pid}"  readonly/>
+    </td>
+    <td>
+      <input type="text" th:name="name" th:value="${product.name}"/>
+    </td>
+    <td>
+      <input type="text" th:name="brand" th:value="${product.brand}"/>
+    </td>
+    <td>
+      <input type="text" th:name="price" th:value="${product.price}"/>
+    </td>
+    <td>
+      <input type="text" th:name="quantity" th:value="${product.quantity}"/>
+    </td>
+    <td><a th:href="@{/admin/deleteProduct(pid=${product.pid})}">Delete</a>
+    </td>
+      <td><button type="submit">Update</button></td>
+    </form>
   </tr>
 </table>
 </body>

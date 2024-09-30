@@ -6,13 +6,15 @@ import lombok.Data;
 
 @Entity
 @Data
+@Table(name = "products")
 public class Product {
     // Getters and Setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer pid;
 
     private String name;
+    @Column(unique = true)
     private String brand;
     private String type;
     private double price;
