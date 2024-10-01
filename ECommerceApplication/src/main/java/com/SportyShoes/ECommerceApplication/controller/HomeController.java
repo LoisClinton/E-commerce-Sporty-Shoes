@@ -5,7 +5,9 @@ import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.SportyShoes.ECommerceApplication.model.Product;
 import com.SportyShoes.ECommerceApplication.repository.ProductRepository;
@@ -27,5 +29,12 @@ public class HomeController {
         model.addAttribute("products", productRepository.findAll());
 
         return "home"; // returns home.html page
+    }
+
+    @GetMapping("/addProductToBasket")
+    public String addProduct(Product product, Model model, @RequestParam int orderQuantity) {
+        System.out.println(product);
+        System.out.println(orderQuantity);
+        return "redirect:/home";
     }
 }

@@ -1,60 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html class="h-full bg-gray-100">
+
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
   <title>Admin Dashboard</title>
 </head>
-<body>
-<h1>Admin Dashboard</h1>
-<button onclick="window.location.href='/login'">Logout</button>
-<button onclick="window.location.href='/adminOrders'">View Orders</button>
 
-<form action="#" th:action="@{/admin/addProduct}" method="post" th:object="${product}">
-  <p>Product Name: <input type="text" th:field="*{name}" /></p>
-  <p>Product Brand: <input type="text" th:field="*{brand}" /></p>
-  <p>Product Price: <input type="text" th:field="*{price}" /></p>
-  <p>Product Amount: <input type="text" th:field="*{quantity}" /></p>
-  <p>Product Image URL: <input type="text" th:field="*{imageUrl}" /></p>
-  <input type="submit" value="Add Product" name="mySubmitButton"/>
-  <input type="reset" value="Reset"/>
-</form>
-<h1>Current Products in stock</h1>
+<body class="h-full max-w-full">
+<div class="min-h-full">
 
+  <!-- Nav Bar fragment insert -->
+  <div th:insert="~{fragments/nav-bar}"></div>
 
-<table border="1">
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Image</th>
-    <th>Brand</th>
-    <th>Price</th>
-    <th>Quantity</th>
-  </tr>
-  <tr th:each="product : ${products}">
-    <form action="#" th:action="@{/admin/updateProduct}" method="get" th:object="${product}">
-    <td>
-      <input type="text" th:name="pid" th:value="${product.pid}"  readonly/>
-    </td>
-    <td>
-      <input type="text" th:name="name" th:value="${product.name}"/>
-    </td>
-      <td>
-        <img th:src="${product.imageUrl}" th:name="imageUrl" th:value="${product.imageUrl}" style="width: 150px;height: 150px;"/>
-      </td>
-    <td>
-      <input type="text" th:name="brand" th:value="${product.brand}"/>
-    </td>
-    <td>
-      <input type="text" th:name="price" th:value="${product.price}"/>
-    </td>
-    <td>
-      <input type="text" th:name="quantity" th:value="${product.quantity}"/>
-    </td>
-    <td><a th:href="@{/admin/deleteProduct(pid=${product.pid})}">Delete</a>
-    </td>
-      <td><button type="submit">Update</button></td>
-    </form>
-  </tr>
-</table>
+  <!-- Products Dash fragment insert -->
+  <div th:insert="~{fragments/products-dash}"></div>
+
+</div>
 </body>
 </html>

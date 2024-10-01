@@ -46,6 +46,11 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    @GetMapping("/logout")
+    public String logout() {
+        return "redirect:/login";
+    }
+
     @GetMapping("/updateProduct")
     public String updateProduct(@RequestParam Integer pid, @RequestParam String name, @RequestParam String brand, @RequestParam double price,  @RequestParam int quantity, Model model) {
         Optional<Product> productCheck = productRepository.findById(pid);
