@@ -26,8 +26,6 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products; // The list of products in this order
 
-    private double totalAmount;
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
 

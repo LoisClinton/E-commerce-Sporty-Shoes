@@ -1,26 +1,54 @@
-<nav class="bg-gray-800">
+<nav th:fragment="navBar(${currentUser}, ${pageType})" class="bg-gray-800">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 bg">
     <div class="flex h-16 items-center justify-between">
       <div class="flex items-center">
-        <div class="flex-shrink-0">
-          <a th:href="@{/admin/logout}" class="rounded-md px-3 py-2 text-sm font-medium text-red-500 hover:bg-gray-900 hover:text-red-600">Logout</a>
-        </div>
-        <div class="hidden md:block">
-          <div class="ml-10 flex items-baseline space-x-4">
-            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <a  class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Shop</a>
 
-            <!-- Not current -->
-            <a  class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Me</a>
-            <!-- Not current -->
-            <a  class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Product Dashboard</a>
-            <!-- Not current -->
-            <a  class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">User Dashboard</a>
-            <!-- Not current -->
-            <a  class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Order Dashboard</a>
+        <!--  LOG OUT BUTTON  -->
+        <div class="flex-shrink-0">
+          <a th:href="@{/logout}" class="rounded-md px-3 py-2 text-sm font-medium text-red-500 hover:bg-gray-900 hover:text-red-600">Logout</a>
+        </div>
+        <!--  LOG OUT BUTTON  -->
+
+        <!--  NAV BUTTONS   -->
+        <!--/*@thymesVar id="pageType" type="string"*/-->
+        <!--  pageType can be any of the following: 'shop' / 'me' / 'my-orders' /  'product-dashboard' / 'user-dashboard' / 'order-dashboard'  -->
+        <!--/*@thymesVar id="currentUser" type="com.SportyShoes.ECommerceApplication.model.User"*/-->
+        <div class="hidden md:block" th:object="${currentUser}">
+          <div class="ml-10 flex items-baseline space-x-4">
+
+            <!--    Both  Clicked   -->
+            <a  class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page" th:if="${pageType == 'shop'}">Shop</a>
+            <!--    Both  Unclicked   -->
+            <a  th:href="@{/home}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" th:if="${pageType != 'shop'}">Shop</a>
+            <!-- Both Me Clicked  -->
+            <a  class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page" th:if="${pageType == 'me' }">Me</a>
+            <!-- Both Me Unclicked   -->
+
+            <a  th:href="@{/user-dashboard/me}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" th:if="${ pageType != 'me' }">Me</a>
+            <!-- Customer My Orders Clicked-->
+            <a  class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page" th:if="${currentUser.userType == 'customer' && pageType == 'my-orders' }">My Orders</a>
+            <!-- Customer My Orders-->
+            <a  th:href="@{/user-dashboard/my-orders}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" th:if="${currentUser.userType == 'customer' && pageType != 'my-orders' }">My Orders</a>
+
+            <!-- Admin Product Dashboard Clicked-->
+            <a class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page" th:if="${currentUser.userType == 'admin' && pageType == 'product-dashboard' }">Product Dashboard</a>
+            <!-- Admin Product Dashboard Unclicked-->
+            <a th:href="@{/product-dashboard}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" th:if="${currentUser.userType == 'admin' && pageType != 'product-dashboard' }">Product Dashboard</a>
+            <!-- Admin User Dashboard Clicked-->
+            <a class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page" th:if="${currentUser.userType == 'admin' && pageType == 'user-dashboard' }">User Dashboard</a>
+            <!-- Admin User Dashboard Unclicked-->
+            <a th:href="@{/user-dashboard}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" th:if="${currentUser.userType == 'admin' && pageType != 'user-dashboard' }">User Dashboard</a>
+            <!-- Admin Order Dashboard Clicked-->
+            <a class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page" th:if="${currentUser.userType == 'admin' && pageType == 'order-dashboard' }">Order Dashboard</a>
+            <!-- Admin Order Dashboard Unclicked-->
+            <a th:href="@{/order-dashboard}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" th:if="${currentUser.userType == 'admin' && pageType != 'order-dashboard' }">Order Dashboard</a>
+
           </div>
         </div>
+        <!--  NAV BUTTONS   -->
+
       </div>
+
       <!--  PROFILE PHOTO-->
       <div class="hidden md:block ml-10 flex space-x-2 flex-row">
         <div class="ml-4 flex items-center md:ml-6">
@@ -31,6 +59,8 @@
           </div>
         </div>
       </div>
+      <!--  PROFILE PHOTO-->
+
     </div>
   </div>
 </nav>

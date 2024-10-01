@@ -15,34 +15,41 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public String logIn(Model model, String email, String password) {
-        User user = userRepository.findByEmail(email);
-        if (user != null && user.getPassword().equals(password)) {
-            if (user.getUserType().equals("admin")) {
-                return "redirect:/admin";
-            } else {
-                return "redirect:/home";
-            }
-        } else {
-            model.addAttribute("error", "Invalid credentials");
-            return "login";
-        }
+    public Optional <User> logIn(User user) {
+        return userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
+
     }
 
-    public String register(String email, String password) {
+    public String addUser(User user) {
         try {
-            User result = userRepository.findByEmail(email);
-            if (result != null) throw new Exception("User with this email already exists");
-            User user = new User();
-            user.setEmail(email);
-            user.setPassword(password);
-            user.setUserType("customer");
-            userRepository.save(user);
+            Optional <User>  optionalUser = Optional.ofNullable(userRepository.findByEmail(user.getEmail()));
+            if (optionalUser.isPresent()) {
+                throw new Exception("User with this email already exists");
+            }
+            User newUser = new User();
+            newUser.setEmail(user.getEmail());
+            newUser.setPassword(user.getPassword());
+            newUser.setUserType("customer");
+            userRepository.saveAndFlush(newUser);
             return "success";
         } catch (Exception error) {
             return error.getMessage();
         }
+    }
 
-
+    public String updateUser(User user) {
+        try {
+            Optional <User>  optionalUser = userRepository.findById(user.getUid());
+            if (optionalUser.isPresent()) {
+                optionalUser.get().setEmail(user.getEmail());
+                optionalUser.get().setPassword(user.getPassword());
+                optionalUser.get().setUserType(user.getUserType());
+                userRepository.saveAndFlush(optionalUser.get());
+                return "success";
+            }
+        } catch (Exception error) {
+            return error.getMessage();
+        }
+        return "Unrecognised error";
     }
 }

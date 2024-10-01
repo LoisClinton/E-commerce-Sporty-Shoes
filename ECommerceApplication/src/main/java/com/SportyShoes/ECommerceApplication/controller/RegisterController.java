@@ -25,14 +25,13 @@ public class RegisterController {
     }
 
     @PostMapping
-    public String signUp(@RequestParam String email, @RequestParam String password, Model model, RedirectAttributes redirectAttributes) {
-        String result = userService.register(email, password);
-        if (result.equals("success")) {
+    public String signUp(User user, Model model, RedirectAttributes redirectAttributes) {
+        String registerAttempt = userService.addUser(user);
+        if (registerAttempt.equals("success")) {
             redirectAttributes.addFlashAttribute("success", "Account created successfully, you can login now!");
             return "redirect:/login";
         }
-        model.addAttribute("error", result);
-        return "redirect:/register";
+        model.addAttribute("error", registerAttempt);
+        return "register";
     }
-
 }

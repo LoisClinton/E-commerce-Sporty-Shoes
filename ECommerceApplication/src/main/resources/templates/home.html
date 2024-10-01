@@ -8,11 +8,11 @@
   <body class="h-full max-w-full">
   <div class="min-h-full">
     <!-- Nav Bar fragment insert -->
-    <div th:insert="~{fragments/nav-bar}"></div>
+    <div th:insert="~{fragments/nav-bar :: navBar(${currentUser}, ${pageType})}"></div>
 
     <header class="bg-white shadow">
       <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Shop Page</h1>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Our Shoes in stock currently</h1>
      </div>
     </header>
 
@@ -27,20 +27,21 @@
           <p th:text="${product.brand}" class="mb-3 font-normal text-gray-700 dark:text-gray-400"></p>
           <p th:text="${product.price}" class="mb-3 font-normal text-gray-700 dark:text-gray-400"></p>
 
-          <form action="#" th:action="@{/home/addProductToBasket}" method="get" th:object="${product}">
+          <form action="#" th:action="@{/home/orderProduct}" method="POST">
             <input type="hidden" th:name="pid" th:value="${product.pid}"></input>
-            <input type="hidden" th:name="imageUrl" th:value="${product.imageUrl}"></input>
-            <input type="hidden" th:name="name" th:value="${product.name}"></input>
-            <input type="hidden" th:name="brand" th:value="${product.brand}"></input>
-            <input type="hidden" th:name="price" th:value="${product.price}"></input>
-            <input type="hidden" th:name="quantity" th:value="${product.quantity}"></input>
+            <input type="hidden" th:name="uid" th:value="${currentUser.uid}"></input>
+<!--            <input type="hidden" th:name="imageUrl" th:value="${product.imageUrl}"></input>-->
+<!--            <input type="hidden" th:name="name" th:value="${product.name}"></input>-->
+<!--            <input type="hidden" th:name="brand" th:value="${product.brand}"></input>-->
+<!--            <input type="hidden" th:name="price" th:value="${product.price}"></input>-->
+<!--            <input type="hidden" th:name="quantity" th:value="${product.quantity}"></input>-->
             <button type="submit" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               Place Order
               <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
               </svg>
             </button>
-            <input th:name="orderQuantity" th:value="${1}" type="number" style="width: 50px" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"></input>
+            <input th:name="orderQuantity" th:value="${orderQuantity}" type="number" style="width: 50px" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"></input>
           </form>
         </div>
       </div>

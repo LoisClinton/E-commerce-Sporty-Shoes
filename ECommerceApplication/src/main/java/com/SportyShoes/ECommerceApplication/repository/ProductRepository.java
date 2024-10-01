@@ -1,5 +1,6 @@
 package com.SportyShoes.ECommerceApplication.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.SportyShoes.ECommerceApplication.model.Product;
@@ -12,4 +13,6 @@ import org.springframework.stereotype.Repository;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     Product findByBrand(String brand);
     Product findByName(String name);
+    List<Product> findByNameContainingOrBrandContainingIgnoreCase(String name, String brand);
+
 }

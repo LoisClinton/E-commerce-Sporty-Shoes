@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html class="h-full bg-slate-800">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <title>Login</title>
+</head>
+
+<body class="h-full max-w-full">
+<div class="min-h-full">
+    <!-- Nav Bar fragment insert -->
+    <div th:insert="~{fragments/nav-bar :: navBar(${currentUser}, ${pageType})}"></div>
+
+
+    <header class="bg-white shadow mb-3">
+        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900">My Details</h1>
+        </div>
+    </header>
+
+    <main class="w-full">
+        <div class="w-full">
+            <form th:action="@{/user-dashboard/me/updateUser}" method="get" th:object="${user}" class="flex justify-center items-center w-full pt-5 pl-20 pr-20">
+                <div class=" w-4/5 p-4 mt-5 mr-10 ml-10 bg-white border border-gray-200 rounded-lg shadow">
+                    <div class="px-4 sm:px-0">
+                        <h3 class="text-base font-semibold leading-7 text-gray-900">User Information</h3>
+                        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Personal Details and Login Information.</p>
+                    </div>
+
+                     <div class="mt-6 border-t border-gray-100">
+                        <dl class="divide-y divide-gray-100">
+
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">ID</dt>
+                                <dd th:text="${currentUser.uid}" class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"></dd>
+                                <input type="hidden" th:name="uid" th:value="${currentUser.uid}" name="uid"/>
+                            </div>
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Full name</dt>
+                                <input value="Lois Clinton" readonly class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"></input>
+                            </div>
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Email address</dt>
+                                <input th:name="email" th:value="${currentUser.email}" class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"></input>
+                            </div>
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Password</dt>
+                                <input th:name="password" th:value="${currentUser.password}" class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"></input>
+                            </div>
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">User Account Type</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                    <li class="flex items-center">
+                                        <svg class="flex-shrink-0 w-4 h-4 text-blue-700 dark:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                                        </svg>
+                                        <span th:text="${currentUser.userType}" class="text-sm font-normal leading-tight text-gray-500 ms-3"></span>
+                                    </li>
+                                </dd>
+                                <input type="hidden" th:name="userType" th:value="${currentUser.userType}"/>
+                            </div>
+                        </dl>
+                     </div>
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-200 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-center w-full text-center">Update Details</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+</body>
+</html>
