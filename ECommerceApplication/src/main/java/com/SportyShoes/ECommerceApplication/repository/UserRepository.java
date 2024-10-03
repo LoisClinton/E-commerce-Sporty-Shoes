@@ -1,7 +1,9 @@
 package com.SportyShoes.ECommerceApplication.repository;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.SportyShoes.ECommerceApplication.model.Product;
 import com.SportyShoes.ECommerceApplication.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +19,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("SELECT u FROM User u WHERE u.uid = :uid")
     Optional<User> findByUid(@Param("uid") Integer uid);
+    List<User> findByEmailContainingOrUserTypeContainingIgnoreCase(String email, String userType);
+
 }

@@ -38,4 +38,14 @@ public class ProductService {
         // search based on product name or brand
         return productRepository.findByNameContainingOrBrandContainingIgnoreCase(searchQuery, searchQuery);
     }
+
+    public String findProductImageByName(String productName) {
+        try {
+            Product productByName = productRepository.findByName(productName);
+            String  productImage  = productByName.getImageUrl();
+            return productImage;
+        }catch(Exception error) {
+            return error.getMessage();
+        }
+    }
 }

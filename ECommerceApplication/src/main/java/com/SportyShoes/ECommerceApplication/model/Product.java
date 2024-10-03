@@ -1,5 +1,7 @@
 package com.SportyShoes.ECommerceApplication.model;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,4 +22,14 @@ public class Product {
     private double price;
     private int quantity;
     private String imageUrl;
+
+    @ManyToMany(mappedBy = "products")
+    private List<Order> orders;
+
+    @PreRemove
+    private void removeOrdersFromProduct() {
+        for (Order order : orders) {
+            order.getProducts().remove(this);
+        }
+    }
 }

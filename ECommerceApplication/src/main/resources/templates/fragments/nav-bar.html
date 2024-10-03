@@ -28,7 +28,7 @@
             <!-- Customer My Orders Clicked-->
             <a  class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page" th:if="${currentUser.userType == 'customer' && pageType == 'my-orders' }">My Orders</a>
             <!-- Customer My Orders-->
-            <a  th:href="@{/user-dashboard/my-orders}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" th:if="${currentUser.userType == 'customer' && pageType != 'my-orders' }">My Orders</a>
+            <a  th:href="@{/order-dashboard/orders}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" th:if="${currentUser.userType == 'customer' && pageType != 'my-orders' }">My Orders</a>
 
             <!-- Admin Product Dashboard Clicked-->
             <a class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page" th:if="${currentUser.userType == 'admin' && pageType == 'product-dashboard' }">Product Dashboard</a>

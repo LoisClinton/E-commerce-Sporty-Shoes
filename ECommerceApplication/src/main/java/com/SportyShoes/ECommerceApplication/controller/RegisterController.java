@@ -31,7 +31,7 @@ public class RegisterController {
             redirectAttributes.addFlashAttribute("success", "Account created successfully, you can login now!");
             return "redirect:/login";
         }
-        model.addAttribute("error", registerAttempt);
-        return "register";
+        redirectAttributes.addFlashAttribute("error", registerAttempt);
+        return "redirect:/register";
     }
 }

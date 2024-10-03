@@ -1,5 +1,6 @@
 package com.SportyShoes.ECommerceApplication.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.SportyShoes.ECommerceApplication.model.Product;
 import com.SportyShoes.ECommerceApplication.service.UserService;
 import com.SportyShoes.ECommerceApplication.model.User;
 import com.SportyShoes.ECommerceApplication.repository.ProductRepository;
@@ -41,7 +43,7 @@ public class UserController {
         model.addAttribute("user", new User());
         //Give Thymeleaf model all users to display in the table
         model.addAttribute("users", userRepository.findAll());
-
+        model.addAttribute("isSearch", "false");
         //Give Thymeleaf model pageType for buttons
         //pageType can be any of the following: 'shop' / 'me' / 'my-orders' /  'product-dashboard' / 'user-dashboard' / 'order-dashboard'
         model.addAttribute("pageType", "user-dashboard");
@@ -71,27 +73,33 @@ public class UserController {
             session.setAttribute("currentUser", user);
             return "redirect:/user-dashboard/me";
         }
-        model.addAttribute("error", updateAttempt);
+        redirectAttributes.addFlashAttribute("error", updateAttempt);
         return "redirect:/user-dashboard/me";
 
     }
 
     @PostMapping("/addUser")
-    public String addUser(User user, Model model) {
+    public String addUser(User user, RedirectAttributes redirectAttributes) {
         System.out.println(user);
-        userRepository.save(user);
+        try{
+            userRepository.save(user);
+        }catch(Exception e){
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/user-dashboard";
+        }
+        redirectAttributes.addFlashAttribute("success", "User created successfully");
         return "redirect:/user-dashboard";
     }
 
-    // TODO - delete user orders as well
     @GetMapping("/deleteUser")
-    public String deleteUser(@RequestParam Integer uid) {
+    public String deleteUser(@RequestParam Integer uid, RedirectAttributes redirectAttributes) {
         try{
             userRepository.deleteById(uid);
         }catch(Exception e){
             System.out.println(e.getMessage());
             return "redirect:/user-dashboard";
         }
+        redirectAttributes.addFlashAttribute("success", "User deleted successfully");
         return "redirect:/user-dashboard";
     }
 
@@ -102,8 +110,20 @@ public class UserController {
             redirectAttributes.addFlashAttribute("success", "User updated successfully");
             return "redirect:/user-dashboard";
         }
-        model.addAttribute("error", updateAttempt);
+//        model.addAttribute("error", updateAttempt);
+        redirectAttributes.addFlashAttribute("error", updateAttempt);
         return "redirect:/user-dashboard";
     }
 
+    @GetMapping("/search")
+    public String searchUsers(@RequestParam("search") String searchQuery, Model model, HttpSession session) {
+        List<User> users = userService.searchUsers(searchQuery); // Search logic in service layer
+        model.addAttribute("users", users);
+        User currentUser = (User) session.getAttribute("currentUser");
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("isSearch", "true");
+        model.addAttribute("user", new User());
+        model.addAttribute("pageType", "user-dashboard");
+        return "user-dashboard"; // return the same dashboard view
+    }
 }

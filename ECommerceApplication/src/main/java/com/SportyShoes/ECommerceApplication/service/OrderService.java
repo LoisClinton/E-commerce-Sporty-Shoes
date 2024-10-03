@@ -1,6 +1,7 @@
 package com.SportyShoes.ECommerceApplication.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +28,8 @@ public class OrderService {
     UserRepository    userRepository;
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    private ProductService productService;
 
     @Transactional
     public String createOrder(int uid,int pid, int orderQuantity) {
@@ -49,5 +52,47 @@ public class OrderService {
             } catch(Exception error){
                 return error.getMessage();
             }
+    }
+
+    public List<Object[]> getAndGroupOrderProductsByUserUid(int userId) {
+        List<Object[]> listOfObjects = orderRepository.sortAndGroupOrderProductsByUserUid(userId);
+
+        // Create an ArrayList
+        List<Object[]> newListOfObjects = new ArrayList<>();
+
+        for (Object[] objArray : listOfObjects) {
+            List<Object> internalList = new ArrayList<>(Arrays.asList(objArray));
+
+            String productName = (String) objArray[0];
+            String productImageUrl = productService.findProductImageByName(productName);
+            internalList.add(productImageUrl);
+            Object[] newArray = internalList.toArray();
+            newListOfObjects.add(newArray);
+        }
+
+        return newListOfObjects;
+    }
+
+    public List<Order> getOrdersByDateBetween(Date startDate, Date endDate) {
+        try {
+            return orderRepository.findByOrderDateBetween(startDate,endDate);
+        }catch (Exception error){
+            System.out.println(error.getMessage());
+            return orderRepository.findAll();
+        }
+    }
+
+    public String updateOrderStatus(Order order) {
+        try {
+            Optional <Order>  optionalOrder = orderRepository.findById(order.getOid());
+            if (optionalOrder.isPresent()) {
+                optionalOrder.get().setStatus(order.getStatus());
+                orderRepository.saveAndFlush(optionalOrder.get());
+                return "success";
+            }
+        } catch (Exception error) {
+            return error.getMessage();
+        }
+        return "Unrecognised error";
     }
 }

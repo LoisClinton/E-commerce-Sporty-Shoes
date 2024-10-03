@@ -1,11 +1,13 @@
 package com.SportyShoes.ECommerceApplication.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.SportyShoes.ECommerceApplication.model.Product;
 import com.SportyShoes.ECommerceApplication.model.User;
 import com.SportyShoes.ECommerceApplication.repository.UserRepository;
 
@@ -51,5 +53,10 @@ public class UserService {
             return error.getMessage();
         }
         return "Unrecognised error";
+    }
+
+    public List<User> searchUsers(String searchQuery) {
+        // search based on user email and admin
+        return userRepository.findByEmailContainingOrUserTypeContainingIgnoreCase(searchQuery, searchQuery);
     }
 }

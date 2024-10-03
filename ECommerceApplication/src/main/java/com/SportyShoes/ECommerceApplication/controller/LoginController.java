@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -36,7 +37,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(User user, HttpSession session, Model model) {
+    public String login(User user, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
         Optional<User> userOptional = userService.logIn(user);
         if (userOptional.isPresent()) {
             session.setAttribute("currentUser", userOptional.get());
@@ -45,6 +46,7 @@ public class LoginController {
             //redirect to shop page
             return "redirect:/home";
         }
+
         model.addAttribute("error", "An Error occurred - Invalid email or password.");
         return "login";
     }

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -48,20 +49,29 @@ public class ProductController {
     }
 
     @PostMapping("/addProduct")
-    public String addProduct(Product product, Model model) {
-        System.out.println(product);
-        productRepository.save(product);
+    public String addProduct(Product product, RedirectAttributes redirectAttributes, Errors errors) {
+        if(product.getImageUrl() == null || product.getImageUrl().isEmpty()) product.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg");
+        try{
+            productRepository.save(product);
+        }catch(Exception e){
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/product-dashboard";
+        }
+
+        redirectAttributes.addFlashAttribute("success", "Product created successfully");
         return "redirect:/product-dashboard";
     }
 
     @GetMapping("/deleteProduct")
-    public String deleteProduct(@RequestParam Integer pid, Model model, HttpSession session) {
+    public String deleteProduct(@RequestParam Integer pid, RedirectAttributes redirectAttributes) {
         try{
             productRepository.deleteById(pid);
         }catch(Exception e){
             System.out.println(e.getMessage());
+            redirectAttributes.addFlashAttribute("success", e.getMessage());
             return "redirect:/product-dashboard";
         }
+        redirectAttributes.addFlashAttribute("success", "Product deleted successfully");
         return "redirect:/product-dashboard";
     }
 
@@ -72,7 +82,7 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("success", "Product updated successfully");
             return "redirect:/product-dashboard";
         }
-        model.addAttribute("error", updateAttempt);
+        redirectAttributes.addFlashAttribute("error", updateAttempt);
         return "redirect:/product-dashboard";
 
     }
